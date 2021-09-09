@@ -1,0 +1,57 @@
+<div class="container">
+  <h2 class="bg-primary text-white text-center mb-5 p-3"> Makeup Products Store</h2>
+
+
+  <div class="row">
+    <div class="col">
+      <select name="brand" id="productsByBrand" (change)="getFilteredList($event)"
+        class="form-select form-select-lg text-uppercase m-2">
+        <option value=""> Product By Brand </option>
+        <option *ngFor="let brand of allBrandsName" value="{{brand}}"> {{brand}} </option>
+      </select>
+    </div>
+    <div class="col">
+      <select name="category" id="productsByCategory" (change)="getFilteredList($event)"
+        class="form-select form-select-lg text-uppercase m-2">
+        <option value=""> Product By Category </option>
+        <option *ngFor="let category of allCategoriesName" value="{{category}}"> {{category}} </option>
+      </select>
+    </div>
+    <div class="col">
+      <select name="type" id="productsByType" (change)="getFilteredList($event)"
+        class="form-select form-select-lg text-uppercase m-2">
+        <option value=""> Product By Type </option>
+        <option *ngFor="let type of allTypeName" value="{{type}}"> {{type}} </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button class="btn btn-primary m-2" (click)="getAllBrandsName()">Brand</button>
+    </div>
+    <div class="col">
+      <button class="btn btn-primary m-2" (click)="resetAllProductsList()">Reset All Products</button>    
+    </div>
+    <div class="col">
+      <!-- <button class="btn btn-primary" (click)="resetAllProductsList()">Reset All Products</button>     -->
+    </div>
+  </div>
+  
+  <div class="d-flex flex-wrap justify-content-center">
+    <div *ngFor="let product of allProducts20; index as i" class="card m-2" style="width: 30%;">
+      <img src="{{product.image_link}}"
+        onerror="this.onerror=null;this.src='https://www.coorg.com/wp-content/themes/TechNews/images/img_not_available.jpg';"
+        class="card-img-top overflow-hidden" style="height: 286px;">
+      <div class="card-body">
+        <p class="card-title"><span class="text-uppercase pe-3 fw-bold">Name: </span>{{product.name}} </p>
+        <p class="card-title"><span class="text-uppercase pe-3 fw-bold">Brand: </span>{{product.brand}}</p>
+        <p class="card-text"><span class="text-uppercase pe-3 fw-bold">Product Type: </span>{{product.product_type}}</p>
+        <p class="card-text"><span class="text-uppercase pe-3 fw-bold">Product Category: </span>{{product.category}}</p>
+        <!-- <p class="card-text">Price {{product.price_sign}} {{product.price}}</p> 
+       <button  class="btn btn-info text-light">More Info</button> -->
+      </div>
+    </div>
+  </div>
+
+</div>
