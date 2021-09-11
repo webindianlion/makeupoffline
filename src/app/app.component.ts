@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import {ProductsService} from './products.service';
 
 @Component({
@@ -20,10 +20,20 @@ export class AppComponent  {
   ifBrandSorted:boolean = false;
   ifCategorySorted:boolean = false;
   ifTypeSorted:boolean = false;
+  
+  anyIfSorted:any = [this.ifBrandSorted, this.ifCategorySorted, this.ifTypeSorted];
 
-  BrandSorted:any[] = [];
-  CategorySorted:any[] = [];
-  TypeSorted:any[] = [];
+  BrandSortedData:any[] = [];
+  categorySortedData:any[] = [];
+  typeSortedData:any[] = [];
+
+  allsortedData:any[] =[];
+
+  @ViewChild('brand', {static: true}) brand:ElementRef;
+  @ViewChild('category', {static: true}) category:ElementRef;
+  @ViewChild('type', {static: true}) type:ElementRef;
+  
+  
 /***************************************************************************************/
   constructor( private productService: ProductsService) {}
 /***************************************************************************************/
@@ -81,46 +91,99 @@ export class AppComponent  {
     let value = event.target.value;
     let name = event.target.name;
 
-    // BrandSorted:any[] = [];
-    // CategorySorted:any[] = [];
-    // TypeSorted:any[] = [];
+    // BrandSortedData:any[] = [];
+    // categorySortedData:any[] = [];
+    // typeSortedData:any[] = [];
 
     if(name == 'brand'){
 
-      if(this.ifBrandSorted && !this.ifCategorySorted && !this.ifTypeSorted ){
+      if(!this.ifCategorySorted && !this.ifTypeSorted ){
         this.allProducts =  this.productService.products;
         this.allProducts = this.allProducts.filter( function (item:any) {
           return item.brand ==value;
         });
+        this.BrandSortedData = this.allProducts;
+        this.ifBrandSorted = true;
       }
-      let sortedProducts = this.allProducts; 
-      this.allProducts = sortedProducts.filter( function (item:any) {
-        return item.brand ==value;
-      });
-      this.ifBrandSorted = true;
+      else if(this.ifCategorySorted && !this.ifTypeSorted ) {
+        this.allProducts = this.categorySortedData;
+        this.allProducts = this.allProducts.filter( function (item:any) {
+          return item.brand ==value;
+        });
+        this.BrandSortedData = this.allProducts;
+        this.ifBrandSorted = true;
+      }
+      else if(!this.ifCategorySorted && this.ifTypeSorted ) {
+        this.allProducts = this.typeSortedData;
+        this.allProducts = this.allProducts.filter( function (item:any) {
+          return item.brand ==value;
+        });
+        this.BrandSortedData = this.allProducts;
+        this.ifBrandSorted = true;
+      }
+      else if(this.ifCategorySorted && this.ifTypeSorted ) {
+        if(this.categorySortedData.length < this.typeSortedData.length) {
+          this.allProducts =   this.categorySortedData;
+        }
+        if(this.categorySortedData.length > this.typeSortedData.length) {
+          this.allProducts =   this.typeSortedData;
+        }
+        this.allProducts = this.allProducts.filter( function (item:any) {
+          return item.brand ==value;
+        });
+        this.BrandSortedData = this.allProducts;
+        this.ifBrandSorted = true;
+      }
+      
+      // this.ifBrandSorted = true;
     }
     if(name == 'category'){
-      this.allProducts = this.allProducts.filter( function (item:any) {
-        return item.category ==value;
-      });
-      this.ifCategorySorted = true;
+      if(!this.ifBrandSorted && !this.ifTypeSorted ){
+        this.allProducts =  this.productService.products;
+        this.allProducts = this.allProducts.filter( function (item:any) {
+          return item.category ==value;
+        });
+        this.categorySortedData = this.allProducts;
+        this.ifCategorySorted =true;
+      }
     }
+
     if(name == 'type'){
-      this.allProducts = this.allProducts.filter( function (item:any) {
-        return item.product_type ==value;
-      });
-      this.ifTypeSorted = true;
-      this.TypeSorted = this.allProducts;
+
+      if(!this.ifBrandSorted && !this.ifCategorySorted ){
+        this.allProducts =  this.productService.products;
+        this.allProducts = this.allProducts.filter( function (item:any) {
+          return item.product_type ==value;
+        });
+        this.typeSortedData = this.allProducts;
+        this.ifTypeSorted =true;
+      }
     }
+
     this.allProducts20 = this.allProducts 
     this.ifDataSorted = true;
     console.log(this.allProducts20);
   }
+
+  // finalData(array1:any, array2:any) {
+  //   // const arrayAllSortedData = [this.BrandSortedData.length, this.categorySortedData.length, this.typeSortedData.length];
+  //   if(array1.length < )
+  //   return arrayAllSortedData.indexOf( Math.min(...arrayAllSortedData) );
+  // }
+
+  // allsorted(){
+  //   this.anyIfSorted.filter((item:any) => {return item==true});
+  // }
   /***************************************************************************************/
   resetAllProductsList() {
     this.allProducts = this.productService.products;
     this.allProducts20 = this.allProducts;
     this.ifBrandSorted = false; this.ifCategorySorted = false; this.ifTypeSorted = false;
+  }
+
+  getFilteredList1(){
+    
+
   }
    
 }
