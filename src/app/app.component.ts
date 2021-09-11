@@ -91,101 +91,69 @@ export class AppComponent  {
     let value = event.target.value;
     let name = event.target.name;
 
-    // BrandSortedData:any[] = [];
-    // categorySortedData:any[] = [];
-    // typeSortedData:any[] = [];
 
     if(name == 'brand'){
 
-      if(!this.ifCategorySorted && !this.ifTypeSorted ){
-        this.allProducts =  this.productService.products;
-        this.allProducts = this.allProducts.filter( function (item:any) {
-          return item.brand ==value;
+      if(this.allsortedData.length == 0 || (this.ifBrandSorted && !this.ifCategorySorted && !this.ifTypeSorted)) {
+        this.allsortedData = this.allProducts.filter( function (item:any) {
+          return item.brand == value;
         });
-        this.BrandSortedData = this.allProducts;
-        this.ifBrandSorted = true;
-      }
-      else if(this.ifCategorySorted && !this.ifTypeSorted ) {
-        this.allProducts = this.categorySortedData;
-        this.allProducts = this.allProducts.filter( function (item:any) {
-          return item.brand ==value;
+      } 
+
+      else if ( (this.ifCategorySorted && !this.ifTypeSorted) || (!this.ifCategorySorted && this.ifTypeSorted) || (this.ifCategorySorted && this.ifTypeSorted)  ) {
+        this.allsortedData = this.allsortedData.filter( function (item:any) {
+          return item.brand == value;
         });
-        this.BrandSortedData = this.allProducts;
-        this.ifBrandSorted = true;
-      }
-      else if(!this.ifCategorySorted && this.ifTypeSorted ) {
-        this.allProducts = this.typeSortedData;
-        this.allProducts = this.allProducts.filter( function (item:any) {
-          return item.brand ==value;
-        });
-        this.BrandSortedData = this.allProducts;
-        this.ifBrandSorted = true;
-      }
-      else if(this.ifCategorySorted && this.ifTypeSorted ) {
-        if(this.categorySortedData.length < this.typeSortedData.length) {
-          this.allProducts =   this.categorySortedData;
-        }
-        if(this.categorySortedData.length > this.typeSortedData.length) {
-          this.allProducts =   this.typeSortedData;
-        }
-        this.allProducts = this.allProducts.filter( function (item:any) {
-          return item.brand ==value;
-        });
-        this.BrandSortedData = this.allProducts;
-        this.ifBrandSorted = true;
       }
       
-      // this.ifBrandSorted = true;
+      this.ifBrandSorted = true;
     }
     if(name == 'category'){
-      if(!this.ifBrandSorted && !this.ifTypeSorted ){
-        this.allProducts =  this.productService.products;
-        this.allProducts = this.allProducts.filter( function (item:any) {
-          return item.category ==value;
+
+      if(this.allsortedData.length == 0) {
+        this.allsortedData = this.allProducts.filter( function (item:any) {
+          return item.category == value;
         });
-        this.categorySortedData = this.allProducts;
-        this.ifCategorySorted =true;
       }
+      else {
+        this.allsortedData = this.allsortedData.filter( function (item:any) {
+          return item.category == value;
+        });
+      }
+
+      this.ifCategorySorted =true;
     }
 
     if(name == 'type'){
 
-      if(!this.ifBrandSorted && !this.ifCategorySorted ){
-        this.allProducts =  this.productService.products;
-        this.allProducts = this.allProducts.filter( function (item:any) {
-          return item.product_type ==value;
+      if(this.allsortedData.length == 0) {
+        this.allsortedData = this.allProducts.filter( function (item:any) {
+          return item.product_type == value;
         });
-        this.typeSortedData = this.allProducts;
-        this.ifTypeSorted =true;
       }
+      else {
+        this.allsortedData = this.allsortedData.filter( function (item:any) {
+          return item.product_type == value;
+        });
+      }
+
+      this.ifTypeSorted =true;
     }
 
-    this.allProducts20 = this.allProducts 
-    this.ifDataSorted = true;
-    console.log(this.allProducts20);
+    this.allProducts20 = this.allsortedData.slice(0,20);
+
   }
 
-  // finalData(array1:any, array2:any) {
-  //   // const arrayAllSortedData = [this.BrandSortedData.length, this.categorySortedData.length, this.typeSortedData.length];
-  //   if(array1.length < )
-  //   return arrayAllSortedData.indexOf( Math.min(...arrayAllSortedData) );
-  // }
-
-  // allsorted(){
-  //   this.anyIfSorted.filter((item:any) => {return item==true});
-  // }
   /***************************************************************************************/
   resetAllProductsList() {
-    this.allProducts = this.productService.products;
-    this.allProducts20 = this.allProducts;
+    this.allProducts20 = this.productService.products.slice(0,20);
     this.ifBrandSorted = false; this.ifCategorySorted = false; this.ifTypeSorted = false;
+    this.brand.nativeElement.value = "";
+    this.category.nativeElement.value = "";
+    this.type.nativeElement.value = "";
   }
-
-  getFilteredList1(){
-    
-
-  }
+  getSingleProduct() {};
    
 }
 
-
+ 
